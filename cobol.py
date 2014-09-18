@@ -113,8 +113,7 @@ class PlaceHolder(Node):
                 if m:
                     size = int(m.group(1))
                     res = self.name[:size]
-                    res.rjust(size, 'F')
-                    return res
+                    return res.rjust(size, 'F')
                  
                 
                   
