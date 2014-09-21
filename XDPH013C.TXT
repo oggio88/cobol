@@ -1,0 +1,40 @@
+      ***************************************************************
+      * PROCEDURA       : PEF                                       *
+      *                   MAIN GRIDH                                *
+      *                   ASSEGNI IN SOSPESO E RESPINTI             *
+      *                   AREA FORMATTATORE XFTPH013                *
+      ***************************************************************
+       01 XDPH013C-AREA.
+          05 XDPH013C-DATI-INPUT.
+             10 XDPH013C-I-COD-NDG                   PIC  X(016).
+          05 XDPH013C-DATI-OUTPUT.
+            07 XDPH013C-DATI-OUTPUT-A13.
+             10 XDPH013C-22-O-NUMOCCURS              PIC  9(005).
+             10 XDPH013C-22-O-PEF OCCURS 400.
+                15 XDPH013C-22-O-TAB-OUT.
+                   20 XDPH013C-22-O-COD-DIPENDENZA   PIC  X(005).
+                   20 XDPH013C-22-O-COD-RAPPORTO     PIC  X(016).
+                   20 XDPH013C-22-O-DSB-TIPO-NOTA-NE PIC  X(050).
+                   20 XDPH013C-22-O-NUM-ASSEGNI-EFFE PIC  9(007).
+                   20 XDPH013C-22-O-IMP-ASSEGNI      PIC S9(015)V9(3)
+                                                 SIGN LEADING SEPARATE.
+                   20 XDPH013C-22-O-DSB-CAU-ASS-IMPA PIC  X(050).
+            07 XDPH013C-DATI-OUTPUT-B13.
+             10 XDPH013C-08-O-NUMOCCURS              PIC  9(005).
+             10 XDPH013C-08-O-PEF OCCURS 400.
+                15 XDPH013C-08-O-TAB-OUT.
+                   20 XDPH013C-08-O-DSB-TIPO-BLOCCO  PIC  X(050).
+                   20 XDPH013C-08-O-DSB-TIPO-CARTA   PIC  X(050).
+                   20 XDPH013C-08-O-DAT-BLOCCO       PIC  X(010).
+            07 XDPH013C-DATI-OUTPUT-C13.
+             10 XDPH013C-23-O-NUMOCCURS              PIC  9(005).
+             10 XDPH013C-23-O-PEF OCCURS 400.
+                15 XDPH013C-23-O-TAB-OUT.
+                   20 XDPH013C-23-O-COD-TIPO-ATTO-NE PIC  X(025).
+                   20 XDPH013C-23-O-IMP-ATTO-NEGATIV PIC S9(015)V9(3)
+                                                SIGN LEADING SEPARATE.
+                   20 XDPH013C-23-O-DAT-ULT-ATTO-GRV PIC  X(010).
+                   20 XDPH013C-23-O-DSB-FONTE-ATT-NE PIC  X(050).
+                   20 XDPH013C-23-O-DSE-FONTE-ATTO-N PIC  X(250).
+                   20 XDPH013C-23-O-COD-ATTO-NEG     PIC  9(010).
+

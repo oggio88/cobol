@@ -1,0 +1,23 @@
+      ***************************************************************
+      * PROCEDURA       : PEF                                       *
+      *                   MAIN GRIDH                                *
+      *                   TITOLI                                    *
+      *                   AREA FORMATTATORE XFTPH020                *
+      ***************************************************************
+       01 XDPH020C-AREA.
+          05 XDPH020C-DATI-INPUT.
+             10 XDPH020C-I-COD-NDG                   PIC  X(016).
+          05 XDPH020C-DATI-OUTPUT.
+             10 XDPH020C-12-O-NUMOCCURS              PIC  9(005).
+             10 XDPH020C-12-O-PEF OCCURS 2000.
+                15 XDPH020C-12-O-TAB-OUT.
+                   20 XDPH020C-12-O-COD-RAPPORTO     PIC  X(016).
+                   20 XDPH020C-12-O-COD-RAPPORTO-COL PIC  X(016).
+                   20 XDPH020C-12-O-COD-DIVISA       PIC  X(003).
+                   20 XDPH020C-12-O-COD-FORMA-TECNIC PIC  X(008).
+                   20 XDPH020C-12-O-COD-TITOLO-ABI   PIC  X(016).
+                   20 XDPH020C-12-O-DSB-TITOLO       PIC  X(050).
+                   20 XDPH020C-12-O-IMP-NOMINALE     PIC S9(015)V9(003)
+                                                  SIGN LEADING SEPARATE.
+                   20 XDPH020C-12-O-NUM-TIT-GIACENZA PIC S9(015).
+
