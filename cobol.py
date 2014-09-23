@@ -69,57 +69,61 @@ def readStatement(instream):
                 else:
                         res += c
         return res.strip().upper()
-                 
-ccobol = open(args[0],'r')
-identRegExp = re.compile('^(\d+) +([A-Z0-9_\-]+)(?: .*|$)')
-typeRegExp = re.compile('PIC +(.+\(\d+\))+')
-typeParser = re.compile('\((\d+)\)')
-occurParser = re.compile(' OCCUR +(\d+)')
 
-identList=[]
-root = Node()
-parent = root
-#pdb.set_trace()
-while True:
-        occurrency = 1
-        line = readStatement(ccobol)
-        if line == '':
-                break
-        elif line[0] == '*':
-                continue
-        m = occurParser.search(line)
-        if m:
-                occurrency = int(m.group(1))
-        m = identRegExp.match(line)
-        if not m:
-                continue
-        ident = int(m.group(1))
-        if len(identList):
-                if ident > identList[-1]:
-                        parent = parent.childs[-1]
-                elif ident == identList[-1]:
-                        pass
-                else:
-                        while ident < identList[-1]:
-                                identList.pop()
-                                parent = parent.parent
-                
-        else:
-                identList.append(ident)
-        
-        pdb.set_trace()
 
-        name = m.group(2)
-        m = typeRegExp.search(line)
-        if m:
-                dataType = m.group(1)
-                PlaceHolder(parent,name,dataType)
-        else:
-                Node(parent,occurrency)
-                
+class CodeTree:
+    identRegExp = re.compile('^(\d+) +([A-Z0-9_\-]+)(?: .*|$)')
+    typeRegExp = re.compile('PIC +(.+\(\d+\))+')
+    typeParser = re.compile('\((\d+)\)')
+    occurParser = re.compile(' OCCUR +(\d+)')
 
-def ptree(tree):
-        for t in tree.childs:
-                ptree(t)
+    def __init__(self, ccobol):
+        identList=[]
+        self.root = Node()
+        parent = self.root
+        #pdb.set_trace()
+        while True:
+            occurrency = 1
+            line = readStatement(ccobol)
+            if line == '':
+                    break
+            elif line[0] == '*':
+                    continue
+            m = CodeTree.occurParser.search(line)
+            if m:
+                    occurrency = int(m.group(1))
+            m = CodeTree.identRegExp.match(line)
+            if not m:
+                    continue
+            ident = int(m.group(1))
+            if len(identList):
+                    if ident > identList[-1]:
+                            parent = parent.childs[-1]
+                    elif ident == identList[-1]:
+                            pass
+                    else:
+                            while ident < identList[-1]:
+                                    identList.pop()
+                                    parent = parent.parent
+
+            else:
+                    identList.append(ident)
+
+            pdb.set_trace()
+
+            name = m.group(2)
+            m = CodeTree.typeRegExp.search(line)
+            if m:
+                    dataType = m.group(1)
+                    PlaceHolder(parent, name, dataType)
+            else:
+                    Node(parent, occurrency)
+
+        def print(self):
+            for t in self.root.children:
+                self.print(t)
                 print(t)
-ptree(parent)
+ccobol = open(args[0], 'r')
+tree = CodeTree(ccobol)
+
+tree.print()
