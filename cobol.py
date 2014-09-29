@@ -175,7 +175,7 @@ class PlaceHolder(Node):
                 xml = PlaceHolder.xmlListMap.format(**d)
             else:
                 if self.decSize:
-                    others = ' stacippa' + str(self.decSize)
+                    others = ' p:decimalLength="%d"' % (self.decSize)
                 else:
                     others = ''
                 d = {
