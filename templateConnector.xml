@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+                xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:jee="http://www.springframework.org/schema/jee"
+                xmlns:p="http://www.springframework.org/schema/p"
+                xsi:schemaLocation="http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+           http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-3.0.xsd"
+                default-lazy-init="true">
+
+                <bean id="{beanName}" parent="archModuleManagerFactoryBean">
+                               <property name="moduleManager" ref="moduleManager" />
+                               <property name="moduleClass" value="{interfaceClassPath}" />
+                </bean>
+
+                <bean id="{moduleName}" scope="prototype"
+                               class="org.springframework.aop.framework.ProxyFactoryBean">
+                               <property name="interceptorNames">
+                                     <list>
+                                           <value>$\{{connectorName}.interceptor\}</value>
+                                     </list>
+                               </property>
+                               <property name="proxyInterfaces"
+                                               value="{interfaceClassPath}">
+                               </property>
+                               <property name="target">
+                                               <bean class="{implClassPath}">
+                                               </bean>
+                               </property>
+                </bean>
+
+				<bean id="{connectorName}InterceptorEJB" parent="techHeaderMQEJB">
+                               <property name="sendDestination" value="$\{{connectorName}.sendDestination\}" />
+                               <property name="receiveDestination" value="$\{{connectorName}.receiveDestination\}" />
+                               <property name="jndiName" value="$\{modelQueueEJB.jndiName\}" />
+                               <property name="providerUrl" value="$\{modelQueueEJB.providerUrl\}" />
+                               <property name="initialContextFactory" value="$\{modelQueueEJB.initialContextFactory\}" />
+                               <property name="message">
+                                               <list merge="true">
+                                               		<ref bean="{connectorName}BodyMessage" />
+                                               </list>
+                               </property>
+                </bean>
+
+
+                <bean id="{connectorName}InterceptorMock" parent="techHeaderMQMock">
+                               <property name="pathNameFile" value="${{connectorName}.pathNameFile}" />
+                               <property name="sendDestination" value="${{connectorName}.sendDestination}" />
+                               <property name="receiveDestination" value="${{connectorName}.receiveDestination}" />
+                               <property name="message">
+                                               <list merge="true">
+                                                    <ref bean="{connectorName}BodyMessage" />
+                                               </list>
+                               </property>
+                </bean>
+
+                <bean id="{connectorName}Interceptor" parent="techHeaderMQ">
+                               <property name="sendDestination" value="$\{{connectorName}.sendDestination\}" />
+                               <property name="receiveDestination" value="$\{{connectorName}.receiveDestination\}" />
+                               <property name="jmsTemplate" ref="jmsQueueTemplate" />
+                               <property name="message">
+                                               <list merge="true">
+                                                    <ref bean="{connectorName}BodyMessage" />
+                                               </list>
+                               </property>
+                </bean>
+
+
+
+<bean id="{connectorName}BodyMessage" parent="archModelQueueMessage">
+    <property name="arguments">
+        <list>
+{mapping}
+        </list>
+    </property>
+    </bean>
+</beans>

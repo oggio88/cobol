@@ -1,0 +1,8 @@
+<bean parent="archModelQueueArgument" p:parameterName="{name}" p:parameterType="{typeCode}" p:length="{size}" p:mappingType="{io}"  p:dimCursorLenght="{cursorDim}"
+            p:unmarshalledClassName="{mapperClassPath}">
+    <constructor-arg>
+        <list>
+{children}
+        </list>
+    </constructor-arg>
+</bean>

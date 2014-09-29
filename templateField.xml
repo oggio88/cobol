@@ -1,0 +1,1 @@
+<bean parent="archModelQueueArgument" p:parameterName="{name}" p:parameterType="{typeCode}"  p:propertyAccessor="{mapperField}" p:length="{size}" p:mappingType="{io} {others}"/>
