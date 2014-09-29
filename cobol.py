@@ -266,8 +266,16 @@ class CodeTree():
                         self.nodes.append(Node(name, parent, occurrency))
 
     def xmlMap(self):
-        #for c in root.children():
-        return
+        mapping = self.root.xmlMap()
+        d = {
+        'mapping': mapping,
+        'connectorName': 'Connector',
+        'moduleName': 'Connector' + 'Module',
+        'beanName': 'Bean' + 'Bean',
+        'interfaceClassPath': 'interfaceClassPath',
+        'implClassPath': 'implClassPath',
+        }
+        return CodeTree.templateConnector.format(**d)
 
     def ptree(self):
         for t in self.tree.children:
@@ -277,14 +285,10 @@ class CodeTree():
 
 
 
-
-
-
-
 #ptree(root)
 ccobol = open(args[0], 'r')
 tree = CodeTree(ccobol)
-print(tree.root)
+print(tree.xmlMap())
 #tree.ptree()
 print(tree.root.xmlMap())
 for p in tree.placeHolders:

@@ -16,7 +16,7 @@
                                class="org.springframework.aop.framework.ProxyFactoryBean">
                                <property name="interceptorNames">
                                      <list>
-                                           <value>$\{{connectorName}.interceptor\}</value>
+                                           <value>${{{connectorName}.interceptor}}</value>
                                      </list>
                                </property>
                                <property name="proxyInterfaces"
@@ -29,11 +29,11 @@
                 </bean>
 
 				<bean id="{connectorName}InterceptorEJB" parent="techHeaderMQEJB">
-                               <property name="sendDestination" value="$\{{connectorName}.sendDestination\}" />
-                               <property name="receiveDestination" value="$\{{connectorName}.receiveDestination\}" />
-                               <property name="jndiName" value="$\{modelQueueEJB.jndiName\}" />
-                               <property name="providerUrl" value="$\{modelQueueEJB.providerUrl\}" />
-                               <property name="initialContextFactory" value="$\{modelQueueEJB.initialContextFactory\}" />
+                               <property name="sendDestination" value="${{{connectorName}.sendDestination}}" />
+                               <property name="receiveDestination" value="${{{connectorName}.receiveDestination}}" />
+                               <property name="jndiName" value="${{modelQueueEJB.jndiName}}" />
+                               <property name="providerUrl" value="${{modelQueueEJB.providerUrl}}" />
+                               <property name="initialContextFactory" value="${{modelQueueEJB.initialContextFactory}}" />
                                <property name="message">
                                                <list merge="true">
                                                		<ref bean="{connectorName}BodyMessage" />
@@ -43,9 +43,9 @@
 
 
                 <bean id="{connectorName}InterceptorMock" parent="techHeaderMQMock">
-                               <property name="pathNameFile" value="${{connectorName}.pathNameFile}" />
-                               <property name="sendDestination" value="${{connectorName}.sendDestination}" />
-                               <property name="receiveDestination" value="${{connectorName}.receiveDestination}" />
+                               <property name="pathNameFile" value="${{{connectorName}.pathNameFile}}" />
+                               <property name="sendDestination" value="${{{connectorName}.sendDestination}}" />
+                               <property name="receiveDestination" value="${{{connectorName}.receiveDestination}}" />
                                <property name="message">
                                                <list merge="true">
                                                     <ref bean="{connectorName}BodyMessage" />
@@ -54,8 +54,8 @@
                 </bean>
 
                 <bean id="{connectorName}Interceptor" parent="techHeaderMQ">
-                               <property name="sendDestination" value="$\{{connectorName}.sendDestination\}" />
-                               <property name="receiveDestination" value="$\{{connectorName}.receiveDestination\}" />
+                               <property name="sendDestination" value="${{{connectorName}.sendDestination}}" />
+                               <property name="receiveDestination" value="${{{connectorName}.receiveDestination}}" />
                                <property name="jmsTemplate" ref="jmsQueueTemplate" />
                                <property name="message">
                                                <list merge="true">
