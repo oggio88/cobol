@@ -1,0 +1,23 @@
+      ***************************************************************
+      * PROCEDURA       : FIDI E GARANZIE                           *
+      *                   NAVIGAZIONE PEF IN DOMANDA E PROPOSTA     *
+      *                   PER FORMA TECNICA FIDO                    *
+      *                   AREA FORMATTATORE XFTPH041                *
+      ***************************************************************
+       01  XDPH041C-AREA.
+      * AREA DI INPUT
+           05  XDPH041C-DATI-INPUT.
+               10 XDPH041C-I-DATA-VA              PIC 9(008).
+               10 XDPH041C-I-ORA-VA               PIC 9(006).
+               10 XDPH041C-I-FUNZIONE             PIC X(001).
+               10 XDPH041C-I-AMBITO               PIC X(001).
+               10 XDPH041C-I-FORMA-TEC-FIDO       PIC X(005).
+               10 XDPH041C-I-SUB-FT-FIDO          PIC 9(003).
+      * AREA DI OUTPUT
+           05  XDPH041C-DATI-OUTPUT.
+               10 XDPH041C-O-NUMOCCURS            PIC 9(003).
+               10 XDPH041C-O-PEF           OCCURS 50.
+                15 XDPH041C-O-COD-SERVIZIO        PIC X(004).
+                15 XDPH041C-O-NOME-SERVIZIO       PIC X(008).
+      *
+

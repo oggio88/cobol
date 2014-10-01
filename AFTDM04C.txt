@@ -1,0 +1,227 @@
+      ***************************************************************
+      * PROCEDURA       : FIDI E GARANZIE                           *
+      *                   GESTIONE GENERALIZZATA ELENCO DOMINI      *
+      * DESRIZIONE      : COPY DI COMUNICAZIONE PER MODULO AFTDM04X *
+      *                                                             *
+      * DATA CREAZIONE  : SETTEMBRE 2014                            *
+      *                                                             *
+      * AUTORE          : ENGINEERING                               *
+      *                                                             *
+      *-------------------------------------------------------------*
+      *                                                             *
+      * LRECL TOTALE    :   32000                                   *
+      *                                                             *
+      * AREA INPUT      :                                           *
+      *                                                             *
+      * AREA OUTPUT     :                                           *
+      *                                                             *
+      * AREA FILLER     :                                           *
+      *                                                             *
+      *                                                             *
+      ***************************************************************
+       01  AFTDM04C-AREA.
+      * AREA DI INPUT
+           05  AFTDM04C-INPUT.
+               10 AFTDM04C-I-BANCA                PIC 9(002).
+               10 AFTDM04C-I-OPERATORE            PIC X(013).
+               10 AFTDM04C-I-SPORTELLO-OP         PIC X(004).
+               10 AFTDM04C-I-DATA-VA              PIC 9(008).
+               10 AFTDM04C-I-ORA-VA               PIC 9(006).
+               10 AFTDM04C-I-CANALE               PIC X(003).
+               10 AFTDM04C-I-VISTA                PIC X(008).
+               10 AFTDM04C-I-KEY                  PIC X(050).
+      * AREA DI OUTPUT
+           05  AFTDM04C-OUTPUT.
+               10 AFTDM04C-O-RET-CODE             PIC 9(003).
+               10 AFTDM04C-O-DES-RET-CODE         PIC X(120).
+               10 AFTDM04C-O-NUM-ELEMENTI         PIC 9(003).
+               10 AFTDM04C-O-ALTRI-DATI           PIC X(001).
+               10 AFTDM04C-O-KEY-RIP              PIC X(050).
+               10 AFTDM04C-TAB-ELEM        OCCURS 150.
+                15 AFTDM04C-O-AREA-DATI           PIC X(200).
+           05  FILLER                             PIC X(1729).
+      *
+      *-------------------------------------------------------------*
+      *    AREA DATI PER ATTF
+      *-------------------------------------------------------------*
+      *
+       01  AFTDM04C-ATTF-AREA-DATI.
+          05 AFTDM04C-ATTF-FORMA-TEC-FIDO         PIC X(005).
+          05 AFTDM04C-ATTF-DESCR-FT-FIDO          PIC X(064).
+          05 AFTDM04C-ATTF-CATEGORIA-RISCHIO      PIC X(002).
+          05 AFTDM04C-ATTF-TEMPORALITA-FIDO       PIC X(001).
+          05 AFTDM04C-ATTF-FLAG-VINCOLI           PIC X(001).
+          05 AFTDM04C-ATTF-FLAG-RIPARTI           PIC X(001).
+          05 AFTDM04C-ATTF-FLAG-REVOCABILE        PIC X(001).
+          05 AFTDM04C-ATTF-IMPORTO-MAX-FIDO       PIC 9(012).
+          05 AFTDM04C-ATTF-TIPO-PROPOSTA          PIC 9(002).
+          05 AFTDM04C-ATTF-FLAG-FIDO-SPEC         PIC X(001).
+          05 AFTDM04C-ATTF-TIPO-GAR-OBB           PIC X(001).
+          05 AFTDM04C-ATTF-DURATA-MAX-AA          PIC 9(002).
+          05 AFTDM04C-ATTF-DURATA-MAX-MM          PIC 9(002).
+          05 AFTDM04C-ATTF-DURATA-MAX-GG          PIC 9(002).
+          05 AFTDM04C-ATTF-TIPO-UTILIZZO          PIC 9(002).
+          05 AFTDM04C-ATTF-FIL-PROPONENTE         PIC X(004).
+          05 AFTDM04C-ATTF-FLAG-POOL              PIC X(001).
+          05 AFTDM04C-ATTF-FIDO-FICS              PIC X(001).
+          05 AFTDM04C-ATTF-ATB-5020               PIC X(002).
+          05 AFTDM04C-ATTF-ATB-5021               PIC X(002).
+          05 AFTDM04C-ATTF-ATB-5022               PIC X(002).
+          05 AFTDM04C-ATTF-ATB-5100               PIC X(001).
+          05 FILLER                               PIC X(088).
+      *
+      *-------------------------------------------------------------*
+      *    AREA DATI PER ATGA
+      *-------------------------------------------------------------*
+      *
+       01  AFTDM04C-ATGA-AREA-DATI.
+          05 AFTDM04C-ATGA-FORMA-TEC-FIDO         PIC X(005).
+          05 AFTDM04C-ATGA-DESCR-FT-FIDO          PIC X(064).
+          05 AFTDM04C-ATGA-CATEGORIA-RISCHIO      PIC X(002).
+          05 AFTDM04C-ATGA-SPECIE-GARANZIA        PIC X(001).
+          05 AFTDM04C-ATGA-FLAG-SPECIFICA         PIC X(001).
+          05 AFTDM04C-ATGA-FLAG-LIMITATA          PIC X(001).
+          05 AFTDM04C-ATGA-CONSOLIDAMENTO-AA      PIC 9(002).
+          05 AFTDM04C-ATGA-CONSOLIDAMENTO-MM      PIC 9(002).
+          05 AFTDM04C-ATGA-CONSOLIDAMENTO-GG      PIC 9(002).
+          05 AFTDM04C-ATGA-DURATA-MAX-AA          PIC 9(002).
+          05 AFTDM04C-ATGA-DURATA-MAX-MM          PIC 9(002).
+          05 AFTDM04C-ATGA-DURATA-MAX-GG          PIC 9(002).
+          05 AFTDM04C-ATGA-FLAG-GARANTI           PIC X(001).
+          05 AFTDM04C-ATGA-FLAG-CALCOLO-SCAD      PIC X(001).
+          05 AFTDM04C-ATGA-SCARTO                 PIC 9(003).
+          05 AFTDM04C-ATGA-CONTROLLO-RAP          PIC X(001).
+          05 AFTDM04C-ATGA-FLAG-IMMOBILE          PIC X(001).
+          05 FILLER                               PIC X(107).
+      *
+      *-------------------------------------------------------------*
+      *    AREA DATI PER ATDF
+      *-------------------------------------------------------------*
+      *
+       01  AFTDM04C-ATDF-AREA-DATI.
+          05 AFTDM04C-ATDF-FORMA-TEC-FIDO         PIC X(005).
+          05 AFTDM04C-ATDF-SUB-FT-FIDO            PIC 9(003).
+          05 AFTDM04C-ATDF-DESCR-AGG-FIDO         PIC X(128).
+          05 FILLER                               PIC X(064).
+      *
+      *-------------------------------------------------------------*
+      *    AREA DATI PER ATFL
+      *-------------------------------------------------------------*
+      *
+       01  AFTDM04C-ATFL-AREA-DATI.
+          05 AFTDM04C-ATFL-TAB-ELEM        OCCURS 15.
+             10 AFTDM04C-ATFL-FORMA-TEC-PROM      PIC X(005).
+             10 AFTDM04C-ATFL-FORMA-TEC-FIDO      PIC X(005).
+             10 AFTDM04C-ATFL-SUB-FT-FIDO         PIC 9(003).
+          05 AFTDM04C-ATFL-NUM-ELE-RIGA           PIC 9(002).
+          05 FILLER                               PIC X(3).
+      *
+      *-------------------------------------------------------------*
+      *    AREA DATI PER ATCG
+      *-------------------------------------------------------------*
+      *
+       01  AFTDM04C-ATCG-AREA-DATI.
+          05 AFTDM04C-ATCG-CAUS-PROPOSTA-GAR      PIC X(002).
+          05 AFTDM04C-ATCG-DESCR-CAUSALE          PIC X(032).
+          05 AFTDM04C-ATCG-FUNZ-GENERARE          PIC X(001).
+          05 FILLER                               PIC X(165).
+      *
+      *-------------------------------------------------------------*
+      *    AREA DATI PER ATCP
+      *-------------------------------------------------------------*
+      *
+       01  AFTDM04C-ATCP-AREA-DATI.
+          05 AFTDM04C-ATCP-CAUS-PROPOSTA-FIDO     PIC X(002).
+          05 AFTDM04C-ATCP-DESCR-CAUSALE          PIC X(032).
+          05 AFTDM04C-ATCP-FUNZ-GENERARE          PIC X(001).
+          05 FILLER                               PIC X(165).
+      *
+      *-------------------------------------------------------------*
+      *    AREA DATI PER ATNO
+      *-------------------------------------------------------------*
+      *
+       01  AFTDM04C-ATNO-AREA-DATI.
+          05 AFTDM04C-ATNO-CAUS-NON-OPER          PIC X(002).
+          05 AFTDM04C-ATNO-DESCR-NON-OPER         PIC X(024).
+          05 AFTDM04C-ATNO-FLAG-IRREVOCABILI      PIC X(001).
+          05 FILLER                               PIC X(173).
+      *
+      *-------------------------------------------------------------*
+      *    AREA DATI PER ATRF
+      *-------------------------------------------------------------*
+      *
+       01  AFTDM04C-ATRF-AREA-DATI.
+          05 AFTDM04C-ATRF-CAUS-REVOCA            PIC X(002).
+          05 AFTDM04C-ATRF-DESCR-REVOCA           PIC X(032).
+          05 AFTDM04C-ATRF-FLAG-IRREVOCABILI      PIC X(001).
+          05 FILLER                               PIC X(165).
+      *
+      *-------------------------------------------------------------*
+      *    AREA DATI PER ATLD
+      *-------------------------------------------------------------*
+      *
+       01  AFTDM04C-ATLD-AREA-DATI.
+          05 AFTDM04C-ATLD-LIV-DELIBERA           PIC 9(002).
+          05 AFTDM04C-ATLD-DESCR-LIVELLO          PIC X(020).
+          05 AFTDM04C-ATLD-FLAG-INSERT-ODG        PIC X(004).
+          05 FILLER                               PIC X(174).
+      *
+      *-------------------------------------------------------------*
+      *    AREA DATI PER ATDV
+      *-------------------------------------------------------------*
+      *
+       01  AFTDM04C-ATDV-AREA-DATI.
+          05 AFTDM04C-ATDV-DIVISA                 PIC X(003).
+          05 AFTDM04C-ATDV-DESCR-DIVISA           PIC X(024).
+          05 AFTDM04C-ATDV-CAMBIO-INT             PIC 9(005).
+          05 AFTDM04C-ATDV-CAMBIO-DEC             PIC 9(004).
+          05 FILLER                               PIC X(164).
+      *
+      *-------------------------------------------------------------*
+      *    AREA DATI PER ATWF
+      *-------------------------------------------------------------*
+      *
+       01  AFTDM04C-ATWF-AREA-DATI.
+          05 AFTDM04C-ATWF-TAB-ELEM        OCCURS 15.
+             10 AFTDM04C-ATWF-GRUPPO-FT           PIC X(005).
+             10 AFTDM04C-ATWF-FORMA-TEC-FIDO      PIC X(005).
+             10 AFTDM04C-ATWF-SUB-FT-FIDO         PIC 9(003).
+          05 AFTDM04C-ATWF-NUM-ELE-RIGA           PIC 9(002).
+          05 FILLER                               PIC X(003).
+      *
+      *-------------------------------------------------------------*
+      *    AREA DATI PER ATWF1
+      *-------------------------------------------------------------*
+      *
+       01  AFTDM04C-ATWF1-AREA-DATI.
+          05 AFTDM04C-ATWF1-TAB-ELEM       OCCURS 15.
+             10 AFTDM04C-ATWF1-GRUPPO-FT          PIC X(005).
+             10 AFTDM04C-ATWF1-FORMA-TEC-FIDO     PIC X(005).
+             10 AFTDM04C-ATWF1-SUB-FT-FIDO        PIC 9(003).
+          05 AFTDM04C-ATWF1-NUM-ELE-RIGA          PIC 9(002).
+          05 FILLER                               PIC X(003).
+      *
+      *-------------------------------------------------------------*
+      *    AREA DATI PER ATWG
+      *-------------------------------------------------------------*
+      *
+       01  AFTDM04C-ATWG-AREA-DATI.
+          05 AFTDM04C-ATWG-TAB-ELEM        OCCURS 15.
+             10 AFTDM04C-ATWG-GRUPPO-FT           PIC X(005).
+             10 AFTDM04C-ATWG-FORMA-TEC-GAR       PIC X(005).
+          05 AFTDM04C-ATWG-NUM-ELE-RIGA           PIC 9(002).
+          05 FILLER                               PIC X(048).
+      *
+      *
+      *-------------------------------------------------------------*
+      *    AREA DATI PER ATWG1
+      *-------------------------------------------------------------*
+      *
+       01  AFTDM04C-ATWG1-AREA-DATI.
+          05 AFTDM04C-ATWG1-TAB-ELEM       OCCURS 15.
+             10 AFTDM04C-ATWG1-GRUPPO-FT          PIC X(005).
+             10 AFTDM04C-ATWG1-FORMA-TEC-GAR      PIC X(005).
+          05 AFTDM04C-ATWG1-NUM-ELE-RIGA          PIC 9(002).
+          05 FILLER                               PIC X(048).
+      *
+

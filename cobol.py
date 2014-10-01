@@ -37,7 +37,11 @@ class Field:
         return Field.typeMap[self.dataType]
 
 class Node:
+        xmlFieldMap = open('templateField.xml', 'r').read()
+        xmlListMap = open('templateList.xml', 'r').read()
+        ioParser = re.compile('^[a-zA-Z0-9_-]+-O-[a-zA-Z0-9_-]+$')
         def __init__(self, name, parent=None, occurrency=None):
+                self.isCursor = False
                 self.occurrency = occurrency
                 self.parent = parent
                 self.level = (self.parent and (self.parent.level + 1)) or 0
@@ -45,6 +49,10 @@ class Node:
                 if parent:
                         parent.children.append(self)
                 self.children = []
+                if Node.ioParser.match(self.name):
+                        self.io = 'OUT'
+                else:
+                        self.io = 'IN'
         
         def __repr__(self):
                 return str(self)
@@ -59,31 +67,63 @@ class Node:
                 return '<%s.%s object at %s>' % (self.__class__.__module__, self.__class__.__name__, hex(id(self)))
 
         def xmlMap(self):
-            res = ''
-            for c in self.children:
-                if not c.occurrency or c.occurrency == 1:
-                    res += c.xmlMap() + '\n'
-            return res
+            if self.occurrency and self.occurrency > 1:
+                i = 0
+                for ch in self.parent.children:
+                    if ch is self:
+                        myindex=i
+                    i += 1
+                i=0
+                cursor = None
+                for i in range(myindex):
+                    ch = self.parent.children[i]
+                    if ch.isCursor:
+                        cursor = ch
+                    i += 1
+                tmp = ' '*12
+                for ch in self.children:
+                    tmp += ch.xmlMap()
+                children = ('>\n' + ' '*12 + '<').join(tmp.split('>\n<'))[:-1]
+                if cursor:
+                    typeCode = '1'
+                    name = cursor.name
+                    others = 'p:dimCursorLenght="%d"' % cursor.size
+                else:
+                    typeCode = self.getField().code
+                    name = self.name
+                    others = ''
+                d = {
+                    'children': children,
+                    'typeCode': typeCode,
+                    'size': self.occurrency,
+                    'io': self.io,
+                    'name': name,
+                    'mapperClassPath': 'qwertyasdfg',
+                    'others': others
+                }
+                xml = Node.xmlListMap.format(**d)
+            else:
+                xml=''
+                for c in self.children:
+                    xml += c.xmlMap()
+            return xml
 
                 
 
 class PlaceHolder(Node):
-        xmlFieldMap = open('templateField.xml', 'r').read()
-        xmlListMap = open('templateList.xml', 'r').read()
         typeParser = re.compile('\((\d+)\)')
-        ioParser = re.compile('^[a-zA-Z0-9_-]+-O-[a-zA-Z0-9_-]+$')
         intParser = re.compile('^(9|S9)\((\d+)\)$')
         decParser = re.compile('^(9|S9)\((\d+)\)V9\((\d+)\)$')
         stringParser = re.compile('^X\((\d+)\)$')
-        cursorParser = re.compile('.*-NUMOCCURS$')
+        cursorParser = re.compile('.*-NUMOCCURS$|.*-NUM-ELEMENTI$')
 
         def __init__(self, name, dataType, parent=None):
-                m = PlaceHolder.cursorParser.search(name)
+                super(PlaceHolder, self).__init__(name, parent)
+                m = PlaceHolder.cursorParser.match(name)
                 if m:
                     self.isCursor = True
                 else:
                     self.isCursor = False
-                super(PlaceHolder, self).__init__(name, parent)
                 self.size = sum([int(n) for n in PlaceHolder.typeParser.findall(dataType)])
                 self.dataType = dataType
                 if self.dataType[0] == 'S':
@@ -110,11 +150,7 @@ class PlaceHolder(Node):
                         t = 'BigDecimal'
                 elif PlaceHolder.stringParser.match(self.dataType):
                         t = 'String'
-                if PlaceHolder.ioParser.match(self.name):
-                        i = 'OUT'
-                else:
-                        i = 'IN'
-                return Field(self.name, self.name, t, i)
+                return Field(self.name, self.name, t, self.io)
         
         def getMock(self):
                 if PlaceHolder.ioParser.match(self.name):
@@ -150,44 +186,22 @@ class PlaceHolder(Node):
 
         def xmlMap(self):
             if self.isCursor:
-                xml = PlaceHolder.xmlListMap
-                children = ''
-                i = 0
-                for ch in self.parent.children:
-                    if ch is self:
-                        listAncestor = self.parent.children[i+1]
-                        length = listAncestor.occurrency
-                    i += 1
-                tmp = ' '*12
-                for ch in listAncestor.children:
-                    tmp += ch.xmlMap()
-                children = ('>\n' + ' '*12 + '<').join(tmp.split('>\n<'))[:-1]
-
-                d = {
-                    'children': children,
-                    'typeCode': self.getField().code(),
-                    'size': length,
-                    'io': self.getField().io,
-                    'name': self.name,
-                    'cursorDim': self.size,
-                    'mapperClassPath': 'qwertyasdfg',
-                }
-                xml = PlaceHolder.xmlListMap.format(**d)
+                return ''
+            if self.decSize:
+                others = ' p:decimalLength="%d"' % (self.decSize)
             else:
-                if self.decSize:
-                    others = ' p:decimalLength="%d"' % (self.decSize)
-                else:
-                    others = ''
-                d = {
-                    'name': self.name,
-                    'typeCode': self.getField().code(),
-                    'mapperField':  '',
-                    'size': self.size,
-                    'io': self.getField().io,
-                    'others': others
-                }
-                xml = PlaceHolder.xmlFieldMap.format(**d)
-
+                others = ''
+            if self.io == 'IN':
+                others += ' p:signatureIndex="1"'
+            d = {
+                'name': self.name,
+                'typeCode': self.getField().code(),
+                'mapperField':  '',
+                'size': self.size,
+                'io': self.getField().io,
+                'others': others
+            }
+            xml = PlaceHolder.xmlFieldMap.format(**d)
             return xml
                 
                   
@@ -217,6 +231,7 @@ class CodeTree():
     typeParser = re.compile('\((\d+)\)')
     occurParser = re.compile(' OCCURS +(\d+)')
     templateConnector = open('templateConnector.xml', 'r').read()
+    mockResponse = open('mockResponse.txt', 'r').read()[:-1]
 
     def __init__(self, ccobol):
         identList=[]
@@ -282,7 +297,11 @@ class CodeTree():
             self.ptree()
             print(t)
 
-
+    def getMock(self):
+        mock = CodeTree.mockResponse
+        for p in self.placeHolders:
+            mock += p.getMock()
+        return mock
 
 
 #ptree(root)
@@ -290,10 +309,7 @@ ccobol = open(args[0], 'r')
 tree = CodeTree(ccobol)
 print(tree.xmlMap())
 #tree.ptree()
-print(tree.root.xmlMap())
+#print(tree.root.xmlMap())
 for p in tree.placeHolders:
 	print(p.getMock())
-mock = open('mockResponse.txt', 'r').read()[:-1]
-for p in tree.placeHolders:
-	mock += p.getMock()
-open(optlist.outfile, 'w').write(mock)
+open(optlist.outfile, 'w').write(tree.getMock())
