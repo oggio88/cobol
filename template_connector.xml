@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+                xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:jee="http://www.springframework.org/schema/jee"
+                xmlns:p="http://www.springframework.org/schema/p"
+                xsi:schemaLocation="http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+           http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-3.0.xsd"
+                default-lazy-init="true">
+
+                <bean id="{beanName}" parent="archModuleManagerFactoryBean">
+                               <property name="moduleManager" ref="moduleManager" />
+                               <property name="moduleClass" value="{interfaceClassPath}" />
+                </bean>
+
+                <bean id="{moduleName}" scope="prototype"
+                               class="org.springframework.aop.framework.ProxyFactoryBean">
+                               <property name="interceptorNames">
+                                     <list>
+                                           <value>$\{{connectorName}.interceptor\}</value>
+                                     </list>
+                               </property>
+                               <property name="proxyInterfaces"
+                                               value="{interfaceClassPath}">
+                               </property>
+                               <property name="target">
+                                               <bean class="{implClassPath}">
+                                               </bean>
+                               </property>
+                </bean>
+
+				<bean id="{connectorName}InterceptorEJB" parent="techHeaderMQEJB">
+                               <property name="sendDestination" value="$\{{connectorName}.sendDestination\}" />
+                               <property name="receiveDestination" value="$\{{connectorName}.receiveDestination\}" />
+                               <property name="jndiName" value="$\{modelQueueEJB.jndiName\}" />
+                               <property name="providerUrl" value="$\{modelQueueEJB.providerUrl\}" />
+                               <property name="initialContextFactory" value="$\{modelQueueEJB.initialContextFactory\}" />
+                               <property name="message">
+                                               <list merge="true">
+                                               		<ref bean="{connectorName}BodyMessage" />
+                                               </list>
+                               </property>
+                </bean>
+
+
+                <bean id="{connectorName}InterceptorMock" parent="techHeaderMQMock">
+                               <property name="pathNameFile" value="${{connectorName}.pathNameFile}" />
+                               <property name="sendDestination" value="${{connectorName}.sendDestination}" />
+                               <property name="receiveDestination" value="${{connectorName}.receiveDestination}" />
+                               <property name="message">
+                                               <list merge="true">
+                                                    <ref bean="{connectorName}BodyMessage" />
+                                               </list>
+                               </property>
+                </bean>
+
+                <bean id="{connectorName}Interceptor" parent="techHeaderMQ">
+                               <property name="sendDestination" value="$\{{connectorName}.sendDestination\}" />
+                               <property name="receiveDestination" value="$\{{connectorName}.receiveDestination\}" />
+                               <property name="jmsTemplate" ref="jmsQueueTemplate" />
+                               <property name="message">
+                                               <list merge="true">
+                                                    <ref bean="{connectorName}BodyMessage" />
+                                               </list>
+                               </property>
+                </bean>
+
+
+
+<bean id="{connectorName}BodyMessage" parent="archModelQueueMessage">
+  <property name="arguments">
+        <list>
+            <bean parent="archModelQueueArgument" p:parameterName="XDPH013C-I-COD-NDG" p:parameterType="2"  p:propertyAccessor="NSRUser.currentCustomer.NDG"  p:signatureIndex="1" p:length="16" p:mappingType="IN"/>
+            <bean parent="archModelQueueArgument" p:parameterName="XDPH013C-22-O-NUMOCCURS" p:parameterType="1" p:length="1" p:mappingType="OUT"  p:dimCursorLenght="5"
+            p:unmarshalledClassName="it.bpm.nsr.business.impl.pef.istruttoria.soggetto.segnalazioni.AssegnoInSospesoMQMapper">
+                 <constructor-arg>
+                <list>
+                    <bean parent="archModelQueueArgument" p:parameterName="XDPH013C-22-O-COD-DIPENDENZA" p:propertyAccessor="agenzia" p:parameterType="2" p:length="5" p:mappingType="OUT"/>
+                    <bean parent="archModelQueueArgument" p:parameterName="XDPH013C-22-O-COD-RAPPORTO" p:propertyAccessor="numeroConto" p:parameterType="2" p:length="16" p:mappingType="OUT"/>
+                    <bean parent="archModelQueueArgument" p:parameterName="XDPH013C-22-O-DSB-TIPO-NOTA-NE" p:propertyAccessor="notaNegativa" p:parameterType="2" p:length="50" p:mappingType="OUT"/>
+                    <bean parent="archModelQueueArgument" p:parameterName="XDPH013C-22-O-NUM-ASSEGNI-EFFE" p:propertyAccessor="quantitaAssegni" p:parameterType="3" p:length="7" p:mappingType="OUT"/>
+                    <bean parent="archModelQueueArgument" p:parameterName="XDPH013C-22-O-IMP-ASSEGNI" p:propertyAccessor="importo" p:parameterType="3" p:decimalLength="3" p:length="16" p:mappingType="OUT"/>
+                    <bean parent="archModelQueueArgument" p:parameterName="XDPH013C-22-O-DSB-CAU-ASS-IMPA" p:propertyAccessor="causale" p:parameterType="2" p:length="50" p:mappingType="OUT"/>
+                </list>
+                 </constructor-arg>
+            </bean>
+            <bean parent="archModelQueueArgument" p:parameterName="XDPH013C-08-O-NUMOCCURS" p:parameterType="1"  p:dimCursorLenght="5" p:length="1" p:mappingType="OUT"
+            p:unmarshalledClassName="it.bpm.nsr.business.impl.pef.istruttoria.soggetto.segnalazioni.CarteBancomatBloccatiMQMapper">
+                 <constructor-arg>
+                <list>
+                    <bean parent="archModelQueueArgument" p:parameterName="XDPH013C-08-O-DSB-TIPO-BLOCCO" p:propertyAccessor="tipologiaBlocco" p:parameterType="2" p:length="50" p:mappingType="OUT"/>
+                    <bean parent="archModelQueueArgument" p:parameterName="XDPH013C-08-O-DSB-TIPO-CARTA" p:propertyAccessor="tipologiaTessera" p:parameterType="2" p:length="50" p:mappingType="OUT"/>
+                    <bean parent="archModelQueueArgument" p:parameterName="XDPH013C-08-O-DAT-BLOCCO" p:propertyAccessor="dataDelBlocco" p:parameterType="2" p:length="10" p:mappingType="OUT"/>
+                </list>
+                </constructor-arg>
+            </bean>
+            <bean parent="archModelQueueArgument" p:parameterName="XDPH013C-23-O-NUMOCCURS" p:parameterType="1" p:length="1" p:dimCursorLenght="5" p:mappingType="OUT"
+            p:unmarshalledClassName="it.bpm.nsr.business.impl.pef.istruttoria.soggetto.segnalazioni.AttoNegativoCertoMQMapper">
+                <constructor-arg>
+                <list>
+                    <bean parent="archModelQueueArgument" p:parameterName="XDPH013C-23-O-COD-TIPO-ATTO-NE" p:propertyAccessor="gmf"  p:parameterType="2" p:length="25" p:mappingType="OUT"/>
+                    <bean parent="archModelQueueArgument" p:parameterName="XDPH013C-23-O-IMP-ATTO-NEGATIV" p:propertyAccessor="importo" p:parameterType="3" p:decimalLength="3" p:length="16" p:mappingType="OUT"/>
+                    <bean parent="archModelQueueArgument" p:parameterName="XDPH013C-23-O-DAT-ULT-ATTO-GRV" p:propertyAccessor="data" p:parameterType="2" p:length="10" p:mappingType="OUT"/>
+                    <bean parent="archModelQueueArgument" p:parameterName="XDPH013C-23-O-DSB-FONTE-ATT-NE" p:propertyAccessor="descrizione" p:parameterType="2" p:length="50" p:mappingType="OUT"/>
+                    <bean parent="archModelQueueArgument" p:parameterName="XDPH013C-23-O-DSE-FONTE-ATTO-N"  p:parameterType="2" p:length="250" p:mappingType="OUT"/>
+                    <bean parent="archModelQueueArgument" p:parameterName="XDPH013C-23-O-COD-ATTO-NEG" p:propertyAccessor="tipo" p:parameterType="3" p:length="10" p:mappingType="OUT"/>
+                </list>
+                </constructor-arg>
+            </bean>
+        </list>
+    </property>
+	</bean>
+</beans>
