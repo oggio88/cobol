@@ -1,23 +1,26 @@
 #!/bin/env python3
-import sys
+import sys,os
 import re,pdb
 
 from random import random
 
 from optparse import OptionParser
 
-usage = "Usage: %prog COPY_COBOL_FILE  -o OUTPUT_FILE"
+usage = "Usage: %prog COPY_COBOL_FILE  -o OUTPUT_FOLDER"
 parser = OptionParser(usage)
-parser.add_option("-o", "--output", dest="outfile", metavar="OUTPUT_FILE", help="Specify the eclipse workspace folder")
+parser.add_option("-o", "--output", dest="outdir", metavar="OUTPUT_FOLDER", help="Specify the eclipse workspace folder")
+parser.add_option("-s", "--service-name", dest="serviceName", metavar="SERVICE_NAME", help="Specify the service name")
 
 optlist, args = parser.parse_args()
 
 if len(args) < 1:
     parser.print_usage()
     sys.exit(-1)
-if not optlist.outfile:
-        optlist.outfile = 'out.txt'
-        
+if not optlist.outdir:
+        optlist.outdir = '.'
+if not optlist.serviceName:
+    optlist.serviceName = 'GenericService'
+      
 class Field:
     typeMap = {
         'int': 1,
@@ -124,17 +127,23 @@ class PlaceHolder(Node):
                     self.isCursor = True
                 else:
                     self.isCursor = False
+                self.intSize = None
+                self.decSize = None
                 self.size = sum([int(n) for n in PlaceHolder.typeParser.findall(dataType)])
                 self.dataType = dataType
-                if self.dataType[0] == 'S':
-                        self.size += 1
                 m = PlaceHolder.decParser.match(self.dataType)
                 if m:
                         self.intSize = int(m.group(2))
                         self.decSize = int(m.group(3))
-                else:
-                    self.intSize = None
-                    self.decSize = None
+                        self.size = self.intSize
+                
+                m=PlaceHolder.intParser.match(self.dataType)
+                if m: 
+                    self.intSize = int(m.group(2))
+                    self.size = self.intSize
+
+                if self.dataType[0] == 'S':
+                    self.size += 1
         
         def __str__(self):
                 res = '%sname: %s parent: %s dataType: %s size: %s\n' % ('  '*self.level, self.name, self.parent and self.parent.__address__(), self.dataType, self.size)
@@ -284,9 +293,9 @@ class CodeTree():
         mapping = self.root.xmlMap()
         d = {
         'mapping': mapping,
-        'connectorName': 'Connector',
-        'moduleName': 'Connector' + 'Module',
-        'beanName': 'Bean' + 'Bean',
+        'connectorName': optlist.serviceName + 'Connector',
+        'moduleName': optlist.serviceName + 'ConnectorModule',
+        'beanName': optlist.serviceName + 'ConnectorBean',
         'interfaceClassPath': 'interfaceClassPath',
         'implClassPath': 'implClassPath',
         }
@@ -307,9 +316,17 @@ class CodeTree():
 #ptree(root)
 ccobol = open(args[0], 'r')
 tree = CodeTree(ccobol)
-print(tree.xmlMap())
+#print(tree.xmlMap())
 #tree.ptree()
 #print(tree.root.xmlMap())
 for p in tree.placeHolders:
 	print(p.getMock())
-open(optlist.outfile, 'w').write(tree.getMock())
+
+
+if not os.path.isdir(optlist.outdir):
+    os.mkdir(optlist.outdir)
+outpath = optlist.outdir
+     
+
+open(outpath + '/%sMQMock.properties' % (optlist.serviceName), 'w').write(tree.getMock())
+open(outpath + '/%sConnector.xml' % (optlist.serviceName), 'w').write(tree.xmlMap())
