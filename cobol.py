@@ -116,7 +116,7 @@ class Node:
 class PlaceHolder(Node):
         typeParser = re.compile('\((\d+)\)')
         intParser = re.compile('^(9|S9)\((\d+)\)$')
-        decParser = re.compile('^(9|S9)\((\d+)\)V9\((\d+)\)$')
+        decParser = re.compile('^(S)?(9+)(\((\d+)\))?V(9+)(\((\d+)\))?$')
         stringParser = re.compile('^X\((\d+)\)$')
         cursorParser = re.compile('.*-NUMOCCURS$|.*-NUM-ELEMENTI$')
 
@@ -133,8 +133,9 @@ class PlaceHolder(Node):
                 self.dataType = dataType
                 m = PlaceHolder.decParser.match(self.dataType)
                 if m:
-                        self.intSize = int(m.group(2))
-                        self.decSize = int(m.group(3))
+                        pdb.set_trace()
+                        self.intSize = ((m.group(4) and int(m.group(4))) or 0) + ((m.group(2) and len(m.group(2))>1 and len(m.group(2))) or 0)
+                        self.decSize = ((m.group(7) and int(m.group(7))) or 0) + ((m.group(5) and len(m.group(5))>1 and len(m.group(5))) or 0)
                         self.size = self.intSize
                 
                 m=PlaceHolder.intParser.match(self.dataType)
@@ -179,8 +180,8 @@ class PlaceHolder(Node):
                         return res
                 m = PlaceHolder.decParser.match(self.dataType)
                 if m:
-                        intSize = int(m.group(2))
-                        decSize = int(m.group(3))
+                        intSize = self.intSize
+                        decSize = self.decSize
                         
                         res = str(int(random() * 10**intSize)).zfill(intSize) + str(int(random() * 10**decSize)).zfill(decSize)
                         if m.group(1) == 'S9':
@@ -236,7 +237,7 @@ def readStatement(instream):
 
 class CodeTree():
     identRegExp = re.compile('^(\d+) +([A-Z0-9_\-]+)(?: .*|$)')
-    typeRegExp = re.compile('PIC +(.+\(\d+\))+')
+    typeRegExp = re.compile('PIC +([\w\d\(\)]+)$')
     typeParser = re.compile('\((\d+)\)')
     occurParser = re.compile(' OCCURS +(\d+)')
     templateConnector = open('templateConnector.xml', 'r').read()
