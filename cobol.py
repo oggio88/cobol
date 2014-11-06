@@ -148,6 +148,7 @@ class PlaceHolder(Node):
         decParser = re.compile('^(S)?(9+)(\((\d+)\))?V(9+)(\((\d+)\))?$')
         stringParser = re.compile('^X\((\d+)\)$')
         cursorParser = re.compile('.*-NUMOCCURS$|.*-NUM-ELEMENTI$')
+        dateParser = re.compile('-DATA?-')
 
         def __init__(self, name, dataType, parent=None):
                 super(PlaceHolder, self).__init__(name, parent)
@@ -174,6 +175,7 @@ class PlaceHolder(Node):
 
                 if self.dataType[0] == 'S':
                     self.size += 1
+
         
         def __str__(self):
                 res = '%sname: %s parent: %s dataType: %s size: %s\n' % ('  '*self.level, self.name, self.parent and self.parent.__address__(), self.dataType, self.size)
@@ -189,14 +191,19 @@ class PlaceHolder(Node):
                         t = 'BigDecimal'
                 elif PlaceHolder.stringParser.match(self.dataType):
                         t = 'String'
+                n = PlaceHolder.dateParser.search(self.name)
+                if m and n and self.size == 8:
+                    t = 'Date'
                 return Field(self.name, self.name, t, self.io)
         
         def getMock(self):
                 if PlaceHolder.ioParser.match(self.name):
                         i = 'OUT'
                 else:
-                        return ''               
-                        
+                        return ''
+
+                if self.getField().dataType == 'Date':
+                    return datetime.date.today().strftime('%Y%m%d')
                 m = PlaceHolder.intParser.match(self.dataType)
                 if m:
                         size = int(m.group(2))
@@ -226,10 +233,11 @@ class PlaceHolder(Node):
         def xmlMap(self):
             if self.isCursor:
                 return ''
+            others = ''
             if self.decSize:
-                others = ' p:decimalLength="%d"' % (self.decSize)
-            else:
-                others = ''
+                others += ' p:decimalLength="%d"' % (self.decSize)
+            elif self.getField().dataType == 'Date':
+                others += ' p:dateFormat="yyyyMMdd"'
             if self.io == 'IN':
                 others += ' p:signatureIndex="1"'
             d = {
