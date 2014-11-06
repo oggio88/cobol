@@ -10,6 +10,7 @@ usage = "Usage: %prog COPY_COBOL_FILE  -o OUTPUT_FOLDER"
 parser = OptionParser(usage)
 parser.add_option("-o", "--output", dest="outdir", metavar="OUTPUT_FOLDER", help="Specify the eclipse workspace folder")
 parser.add_option("-s", "--service-name", dest="serviceName", metavar="SERVICE_NAME", help="Specify the service name")
+parser.add_option("-p", "--package-name", dest="packageName", metavar="PACKAGE_NAME", help="Specify the package name")
 
 optlist, args = parser.parse_args()
 
@@ -20,7 +21,27 @@ if not optlist.outdir:
         optlist.outdir = '.'
 if not optlist.serviceName:
     optlist.serviceName = 'GenericService'
-      
+if not optlist.packageName:
+    optlist.packageName = 'classpath'
+
+def lowFirst(string):
+    return string[0].lower() + string[1:]
+
+def convertCamelCase(s):
+    lower = False
+    res = ''
+    for c in s:
+        old = lower
+        if c.lower() == c:
+            lower = True
+        else:
+            lower = False
+        if not lower and lower != old:
+            res += '_' + c.lower()
+        else:
+            res += c.lower()
+    return res
+
 class Field:
     typeMap = {
         'int': 1,
@@ -74,9 +95,9 @@ class Node:
                 i = 0
                 for ch in self.parent.children:
                     if ch is self:
-                        myindex=i
+                        myindex = i
                     i += 1
-                i=0
+                i = 0
                 cursor = None
                 for i in range(myindex):
                     ch = self.parent.children[i]
@@ -101,7 +122,7 @@ class Node:
                     'size': self.occurrency,
                     'io': self.io,
                     'name': name,
-                    'mapperClassPath': 'qwertyasdfg',
+                    'mapperClassPath': optlist.packageName + '.' + optlist.serviceName + 'MQMapper',
                     'others': others
                 }
                 xml = Node.xmlListMap.format(**d)
@@ -242,6 +263,8 @@ class CodeTree():
     occurParser = re.compile(' OCCURS +(\d+)')
     templateConnector = open('templateConnector.xml', 'r').read()
     mockResponse = open('mockResponse.txt', 'r').read()[:-1]
+    templateConnectorImpl = open('TemplateConnectorImpl.java', 'r').read()
+    templateConnectorInterface = open('TemplateConnectorInterface.java', 'r').read()
 
     def __init__(self, ccobol):
         identList=[]
@@ -294,11 +317,11 @@ class CodeTree():
         mapping = self.root.xmlMap()
         d = {
         'mapping': mapping,
-        'connectorName': optlist.serviceName + 'Connector',
-        'moduleName': optlist.serviceName + 'ConnectorModule',
-        'beanName': optlist.serviceName + 'ConnectorBean',
-        'interfaceClassPath': 'interfaceClassPath',
-        'implClassPath': 'implClassPath',
+        'connectorName': lowFirst(optlist.serviceName) + 'Connector',
+        'moduleName': lowFirst(optlist.serviceName) + 'ConnectorModule',
+        'beanName': lowFirst(optlist.serviceName) + 'ConnectorBean',
+        'interfaceClassPath': optlist.packageName + '.I' + optlist.serviceName + 'Connector',
+        'implClassPath': optlist.packageName + '.' + optlist.serviceName + 'ConnectorImpl',
         }
         return CodeTree.templateConnector.format(**d)
 
@@ -313,6 +336,19 @@ class CodeTree():
             mock += p.getMock()
         return mock
 
+    def getInterface(self):
+        d = {
+        'serviceName': optlist.serviceName,
+        'packageName': optlist.packageName,
+        }
+        return CodeTree.templateConnectorInterface.format(**d)
+
+    def getImpl(self):
+        d = {
+        'serviceName': optlist.serviceName,
+        'packageName': optlist.packageName,
+        }
+        return CodeTree.templateConnectorImpl.format(**d)
 
 #ptree(root)
 ccobol = open(args[0], 'r')
@@ -321,7 +357,7 @@ tree = CodeTree(ccobol)
 #tree.ptree()
 #print(tree.root.xmlMap())
 for p in tree.placeHolders:
-	print(p.getMock())
+    print(p.getMock())
 
 
 if not os.path.isdir(optlist.outdir):
@@ -331,3 +367,6 @@ outpath = optlist.outdir
 
 open(outpath + '/%sMQMock.properties' % (optlist.serviceName), 'w').write(tree.getMock())
 open(outpath + '/%sConnector.xml' % (optlist.serviceName), 'w').write(tree.xmlMap())
+open(outpath + '/I%sConnector.java' % (optlist.serviceName), 'w').write(tree.getInterface())
+open(outpath + '/%sConnectorImpl.java' % (optlist.serviceName), 'w').write(tree.getImpl())
+
