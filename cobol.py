@@ -3,7 +3,7 @@ import sys,os
 import re,pdb
 import json
 
-from random import random
+from random import random,choice
 from optparse import OptionParser
 
 usage = "Usage: %prog COPY_COBOL_FILE  -o OUTPUT_FOLDER -s SERVICE_NAME"
@@ -149,6 +149,7 @@ class PlaceHolder(Node):
         stringParser = re.compile('^X\((\d+)\)$')
         cursorParser = re.compile('.*-NUMOCCURS$|.*-NUM-ELEMENTI$')
         dateParser = re.compile('-DATA?-')
+        signParser = re.compile('^.*-S$')
 
         def __init__(self, name, dataType, parent=None):
                 super(PlaceHolder, self).__init__(name, parent)
@@ -201,7 +202,10 @@ class PlaceHolder(Node):
                         i = 'OUT'
                 else:
                         return ''
-
+                m = PlaceHolder.signParser.match(self.name)
+                if self.size == 1 and m:
+                        return choice(('+','-'))
+                        
                 if self.getField().dataType == 'Date':
                     return datetime.date.today().strftime('%Y%m%d')
                 m = PlaceHolder.intParser.match(self.dataType)
