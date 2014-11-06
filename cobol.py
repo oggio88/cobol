@@ -1,16 +1,17 @@
 #!/bin/env python3
 import sys,os
 import re,pdb
+import json
 
 from random import random
-
 from optparse import OptionParser
 
-usage = "Usage: %prog COPY_COBOL_FILE  -o OUTPUT_FOLDER"
+usage = "Usage: %prog COPY_COBOL_FILE  -o OUTPUT_FOLDER -s SERVICE_NAME"
 parser = OptionParser(usage)
 parser.add_option("-o", "--output", dest="outdir", metavar="OUTPUT_FOLDER", help="Specify the eclipse workspace folder")
 parser.add_option("-s", "--service-name", dest="serviceName", metavar="SERVICE_NAME", help="Specify the service name")
 parser.add_option("-p", "--package-name", dest="packageName", metavar="PACKAGE_NAME", help="Specify the package name")
+parser.add_option("-c", "--configuration", dest="json", help="Read configuration from JSON configuration file, this configuration will override all the others")
 
 optlist, args = parser.parse_args()
 
@@ -26,6 +27,13 @@ if not optlist.packageName:
 
 def lowFirst(string):
     return string[0].lower() + string[1:]
+
+if optlist.json:
+    json_data = open(optlist.json)
+    data = json.load(json_data)
+    json_data.close()
+    optlist.serviceName = data['serviceName']
+    optlist.packageName = data['packageName']
 
 def convertCamelCase(s):
     lower = False
