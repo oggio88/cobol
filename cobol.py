@@ -165,8 +165,8 @@ class PlaceHolder(Node):
                 m = PlaceHolder.decParser.match(self.dataType)
                 if m:
                         pdb.set_trace()
-                        self.intSize = ((m.group(4) and int(m.group(4))) or 0) + ((m.group(2) and len(m.group(2))>1 and len(m.group(2))) or 0)
-                        self.decSize = ((m.group(7) and int(m.group(7))) or 0) + ((m.group(5) and len(m.group(5))>1 and len(m.group(5))) or 0)
+                        self.intSize = ((m.group(4) and int(m.group(4))) or 0) + ((m.group(2) and len(m.group(2))>0 and len(m.group(2))) or 0)
+                        self.decSize = ((m.group(7) and int(m.group(7))) or 0) + ((m.group(5) and len(m.group(5))>0 and len(m.group(5))) or 0)
                         self.size = self.intSize
                 
                 m=PlaceHolder.intParser.match(self.dataType)
@@ -278,7 +278,7 @@ def readStatement(instream):
 
 class CodeTree():
     identRegExp = re.compile('^(\d+) +([A-Z0-9_\-]+)(?: .*|$)')
-    typeRegExp = re.compile('PIC +([\w\d\(\)]+)$')
+    typeRegExp = re.compile('PIC +([\w\d\(\)]+)(\s+|$)')
     typeParser = re.compile('\((\d+)\)')
     occurParser = re.compile(' OCCURS +(\d+)')
     templateConnector = open('templateConnector.xml', 'r').read()
