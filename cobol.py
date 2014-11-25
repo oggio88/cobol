@@ -164,7 +164,7 @@ class PlaceHolder(Node):
                 self.dataType = dataType
                 m = PlaceHolder.decParser.match(self.dataType)
                 if m:
-                        pdb.set_trace()
+                        #pdb.set_trace()
                         self.intSize = ((m.group(4) and int(m.group(4))) or 0) + ((m.group(2) and len(m.group(2))>0 and len(m.group(2))) or 0)
                         self.decSize = ((m.group(7) and int(m.group(7))) or 0) + ((m.group(5) and len(m.group(5))>0 and len(m.group(5))) or 0)
                         self.size = self.intSize
