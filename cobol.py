@@ -146,7 +146,7 @@ class PlaceHolder(Node):
         typeParser = re.compile('\((\d+)\)')
         intParser = re.compile('^(9|S9)\((\d+)\)$')
         decParser = re.compile('^(S)?(9+)(\((\d+)\))?V(9+)(\((\d+)\))?$')
-        stringParser = re.compile('^X\((\d+)\)$')
+        stringParser = re.compile('^(X+)(\((\d+)\))?$')
         cursorParser = re.compile('.*-NUMOCCURS$|.*-NUM-ELEMENTI$')
         dateParser = re.compile('-DATA?-')
         signParser = re.compile('^.*-S$')
@@ -163,10 +163,11 @@ class PlaceHolder(Node):
                 self.size = sum([int(n) for n in PlaceHolder.typeParser.findall(dataType)])
                 self.dataType = dataType
                 m = PlaceHolder.decParser.match(self.dataType)
-                if m:
-                        #pdb.set_trace()
-                        self.intSize = ((m.group(4) and int(m.group(4))) or 0) + ((m.group(2) and len(m.group(2))>0 and len(m.group(2))) or 0)
-                        self.decSize = ((m.group(7) and int(m.group(7))) or 0) + ((m.group(5) and len(m.group(5))>0 and len(m.group(5))) or 0)
+                #if self.name == 'XDPH919C-O-OF-PFL-LEAS':
+                #     pdb.set_trace()   
+                if m:                        
+                        self.intSize = ((m.group(4) and (int(m.group(4)))-1) or 0) + ((m.group(2) and len(m.group(2))>0 and len(m.group(2))) or 0)
+                        self.decSize = ((m.group(7) and (int(m.group(7)))-1) or 0) + ((m.group(5) and len(m.group(5))>0 and len(m.group(5))) or 0)
                         self.size = self.intSize
                 
                 m=PlaceHolder.intParser.match(self.dataType)
@@ -186,6 +187,7 @@ class PlaceHolder(Node):
         
         def getField(self):
                 m = PlaceHolder.intParser.match(self.dataType)
+                t = None
                 if m:
                         t = 'BigInteger'
                 elif PlaceHolder.decParser.match(self.dataType):
@@ -208,10 +210,11 @@ class PlaceHolder(Node):
                         
                 if self.getField().dataType == 'Date':
                     return datetime.date.today().strftime('%Y%m%d')
+                    
                 m = PlaceHolder.intParser.match(self.dataType)
                 if m:
                         size = int(m.group(2))
-                        if 'OCCURS' in self.name:
+                        if PlaceHolder.cursorParser.match(self.name):
                             return str(1).zfill(size)
                         res = str(int(random() * 10**size)).zfill(size)
                         if m.group(1) == 'S9':
@@ -224,13 +227,16 @@ class PlaceHolder(Node):
                         decSize = self.decSize
                         
                         res = str(int(random() * 10**intSize)).zfill(intSize) + str(int(random() * 10**decSize)).zfill(decSize)
-                        if m.group(1) == 'S9':
-                                intSize+=1
-                                res = '-' + res
+                        if m.group(1):
+                                #intSize+=1
+                                res = choice(['-','+']) + res
                         return res
                 m = PlaceHolder.stringParser.match(self.dataType)
                 if m:
-                    size = int(m.group(1))
+                    if m.group(3):
+                            size = int(m.group(3))
+                    else:
+                        size = len(m.group(1))
                     res = self.name[:size]
                     return res.rjust(size, 'F')
 
@@ -377,7 +383,7 @@ tree = CodeTree(ccobol)
 #tree.ptree()
 #print(tree.root.xmlMap())
 for p in tree.placeHolders:
-    print(p.getMock())
+    print('%s\t%s' %(p.getMock(), p.name))
 
 
 if not os.path.isdir(optlist.outdir):
