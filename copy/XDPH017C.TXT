@@ -1,0 +1,22 @@
+      ***************************************************************
+      * PROCEDURA       : FIDI E GARANZIE                           *
+      *                   PRINCIPALI ESPOSIZIONI DEL CLIENTE        *
+      *                   AREA FORMATTATORE XFTPH017                *
+      ***************************************************************
+       01  XDPH017C-AREA.
+      * AREA DI INPUT
+           05  XDPH017C-DATI-INPUT.
+               10 XDPH017C-I-NDG                  PIC  X(016).
+      * AREA DI OUTPUT
+           05  XDPH017C-DATI-OUTPUT.
+               10 XDPH017C-O-NUMOCCURS            PIC  9(003).
+               10 XDPH017C-O-PEF           OCCURS  20.
+                  15 XDNA004C-O-TAB-OUT.
+                     20 XDPH017C-O-DESCRIZIONE    PIC  X(40).
+                     20 XDPH017C-O-ACCORDATO      PIC S9(18)
+                                                  SIGN LEADING SEPARATE.
+                     20 XDPH017C-O-UTILIZZATO     PIC S9(18)
+                                                  SIGN LEADING SEPARATE.
+                     20 XDPH017C-O-PERCENTUALE    PIC S9(03)V9
+                                                  SIGN LEADING SEPARATE.
+

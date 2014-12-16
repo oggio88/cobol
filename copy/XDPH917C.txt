@@ -1,0 +1,83 @@
+      ***************************************************************
+      * PROCEDURA       : PEF                                       *
+      *                   ESTERO - SERVIZIO DI INQUIRY RAPPORTO     *
+      *                            PER NUOVA PRATICA FIDI           *
+      *                   AREA FORMATTATORE XFTPH917                *
+      ***************************************************************
+       01  XDPH917C-AREA.
+      * AREA DI INPUT
+           05  XDPH917C-DATI-INPUT.
+               10  XDPH917C-I-ABI-ISTITUTO        PIC  9(005).
+               10  XDPH917C-I-TIPO-RICHIESTA      PIC  X(001).
+               10  XDPH917C-I-NDG-INP             PIC  X(016).
+               10  XDPH917C-I-DATA-RIF            PIC  X(008).
+      * AREA DI OUTPUT
+           05  XDPH917C-DATI-OUTPUT.
+           05  XDPH917C-O-NUMOCCURS         PIC  9(003).
+           05  XDPH917C-O-PEF              OCCURS 350.
+               10  XDPH917C-O-POSIZIONE-OUT PIC  X(005).
+               10  XDPH917C-O-QTA-P-T-TC    PIC  9(09).
+               10  XDPH917C-O-IMP-P-T-TC    PIC  9(15).
+               10  XDPH917C-O-QTA-P-F-TC    PIC  9(09).
+               10  XDPH917C-O-IMP-P-F-TC    PIC  9(15).
+               10  XDPH917C-O-QTA-S-T-TC    PIC  9(09).
+               10  XDPH917C-O-IMP-S-T-TC    PIC  9(15).
+               10  XDPH917C-O-QTA-S-F-TC    PIC  9(09).
+               10  XDPH917C-O-IMP-S-F-TC    PIC  9(15).
+               10  XDPH917C-O-QTA-I-T-TC    PIC  9(09).
+               10  XDPH917C-O-IMP-I-T-TC    PIC  9(15).
+               10  XDPH917C-O-QTA-I-F-TC    PIC  9(09).
+               10  XDPH917C-O-IMP-I-F-TC    PIC  9(15).
+               10  XDPH917C-O-QTA-R-T-TC    PIC  9(09).
+               10  XDPH917C-O-IMP-R-T-TC    PIC  9(15).
+               10  XDPH917C-O-QTA-R-F-TC    PIC  9(09).
+               10  XDPH917C-O-IMP-R-F-TC    PIC  9(15).
+               10  XDPH917C-O-QTA-P-T-TP    PIC  9(09).
+               10  XDPH917C-O-IMP-P-T-TP    PIC  9(15).
+               10  XDPH917C-O-QTA-P-F-TP    PIC  9(09).
+               10  XDPH917C-O-IMP-P-F-TP    PIC  9(15).
+               10  XDPH917C-O-QTA-S-T-TP    PIC  9(09).
+               10  XDPH917C-O-IMP-S-T-TP    PIC  9(15).
+               10  XDPH917C-O-QTA-S-F-TP    PIC  9(09).
+               10  XDPH917C-O-IMP-S-F-TP    PIC  9(15).
+               10  XDPH917C-O-QTA-I-T-TP    PIC  9(09).
+               10  XDPH917C-O-IMP-I-T-TP    PIC  9(15).
+               10  XDPH917C-O-QTA-I-F-TP    PIC  9(09).
+               10  XDPH917C-O-IMP-I-F-TP    PIC  9(15).
+               10  XDPH917C-O-QTA-R-T-TP    PIC  9(09).
+               10  XDPH917C-O-IMP-R-T-TP    PIC  9(15).
+               10  XDPH917C-O-QTA-R-F-TP    PIC  9(09).
+               10  XDPH917C-O-IMP-R-F-TP    PIC  9(15).
+               10  XDPH917C-O-QTA-P-T-AP    PIC  9(09).
+               10  XDPH917C-O-IMP-P-T-AP    PIC  9(15).
+               10  XDPH917C-O-QTA-P-F-AP    PIC  9(09).
+               10  XDPH917C-O-IMP-P-F-AP    PIC  9(15).
+               10  XDPH917C-O-QTA-S-T-AP    PIC  9(09).
+               10  XDPH917C-O-IMP-S-T-AP    PIC  9(15).
+               10  XDPH917C-O-QTA-S-F-AP    PIC  9(09).
+               10  XDPH917C-O-IMP-S-F-AP    PIC  9(15).
+               10  XDPH917C-O-QTA-I-T-AP    PIC  9(09).
+               10  XDPH917C-O-IMP-I-T-AP    PIC  9(15).
+               10  XDPH917C-O-QTA-I-F-AP    PIC  9(09).
+               10  XDPH917C-O-IMP-I-F-AP    PIC  9(15).
+               10  XDPH917C-O-QTA-R-T-AP    PIC  9(09).
+               10  XDPH917C-O-IMP-R-T-AP    PIC  9(15).
+               10  XDPH917C-O-QTA-R-F-AP    PIC  9(09).
+               10  XDPH917C-O-IMP-R-F-AP    PIC  9(15).
+               10  XDPH917C-O-QTA-P-T-2AP   PIC  9(09).
+               10  XDPH917C-O-IMP-P-T-2AP   PIC  9(15).
+               10  XDPH917C-O-QTA-P-F-2AP   PIC  9(09).
+               10  XDPH917C-O-IMP-P-F-2AP   PIC  9(15).
+               10  XDPH917C-O-QTA-S-T-2AP   PIC  9(09).
+               10  XDPH917C-O-IMP-S-T-2AP   PIC  9(15).
+               10  XDPH917C-O-QTA-S-F-2AP   PIC  9(09).
+               10  XDPH917C-O-IMP-S-F-2AP   PIC  9(15).
+               10  XDPH917C-O-QTA-I-T-2AP   PIC  9(09).
+               10  XDPH917C-O-IMP-I-T-2AP   PIC  9(15).
+               10  XDPH917C-O-QTA-I-F-2AP   PIC  9(09).
+               10  XDPH917C-O-IMP-I-F-2AP   PIC  9(15).
+               10  XDPH917C-O-QTA-R-T-2AP   PIC  9(09).
+               10  XDPH917C-O-IMP-R-T-2AP   PIC  9(15).
+               10  XDPH917C-O-QTA-R-F-2AP   PIC  9(09).
+               10  XDPH917C-O-IMP-R-F-2AP   PIC  9(15).
+

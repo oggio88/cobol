@@ -1,0 +1,22 @@
+      ***************************************************************
+      * PROCEDURA       : PEF                                       *
+      *                   ELENCO NDG COLLEGATI                      *
+      *                   COMPONENTI IL GRUPPO GLOBALE DI RISCHIO   *
+      *                   AREA FORMATTATORE XFTPH039                *
+      ***************************************************************
+       01  XDPH039C-AREA.
+      * AREA DI INPUT
+           05  XDPH039C-DATI-INPUT.
+               10 XDPH039C-I-DATA-VA              PIC 9(008).
+               10 XDPH039C-I-ORA-VA               PIC 9(006).
+               10 XDPH039C-I-FUNZIONE             PIC X(001).
+               10 XDPH039C-I-NDG                  PIC X(016).
+      * AREA DI OUTPUT
+           05  XDPH039C-DATI-OUTPUT.
+               10 XDPH039C-O-NUMOCCURS            PIC 9(003).
+               10 XDPH039C-TAB-PEF         OCCURS 350.
+                15 XDPH039C-O-NDG-COLLEGATO       PIC X(016).
+                15 XDPH039C-O-INTESTAZIONE-A      PIC X(032).
+                15 XDPH039C-O-INTESTAZIONE-B      PIC X(032).
+      *
+

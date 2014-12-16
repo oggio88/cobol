@@ -1,0 +1,41 @@
+      ***************************************************************
+      * PROCEDURA       : PEF                                       *
+      *                   FIDI E GARANZIE                           *
+      *                   GESTIONE COMPLETAMENTO PROPOSTA           *
+      ***************************************************************
+       01  XDPH063A-AREA.
+      * AREA DI INPUT
+           05  XDPH063C-DATI-INPUT.
+               10 XDPH063C-I-DATA-VA              PIC 9(008).
+               10 XDPH063C-I-ORA-VA               PIC 9(006).
+               10 XDPH063C-I-ROLLBACK             PIC X(001).
+               10 XDPH063C-I-FUNZIONE             PIC X(001).
+               10 XDPH063C-I-SEZIONE              PIC X(002).
+               10 XDPH063C-I-NDG                  PIC X(016).
+               10 XDPH063C-I-NUM-PROPOSTA         PIC 9(008).
+               10 XDPH063C-O-COD-PROPONENTE       PIC X(003).
+               10 XDPH063C-O-FLAG-URGENTE         PIC X(001).
+               10 XDPH063C-O-FLAG-NOTA-OPERAT     PIC X(001).
+               10 XDPH063C-O-DESCR-NOTA           PIC X(064).
+               10 XDPH063C-O-DESCR-NOTA-1         PIC X(064).
+               10 XDPH063C-O-DESCR-NOTA-2         PIC X(064).
+               10 XDPH063C-O-DESCR-NOTA-3         PIC X(064).
+               10 XDPH063C-O-DESCR-NOTA-4         PIC X(064).
+               10 XDPH063C-O-DESCR-NOTA-5         PIC X(064).
+               10 XDPH063C-O-DESCR-NOTA-6         PIC X(064).
+               10 XDPH063C-O-DESCR-NOTA-7         PIC X(064).
+      * AREA DI OUTPUT
+           05  XDPH063C-DATI-OUTPUT.
+               10 XDPH063C-O-INTESTAZIONE-A       PIC X(032). 
+               10 XDPH063C-O-INTESTAZIONE-B       PIC X(032). 
+               10 XDPH063C-O-LIV-DELIBERA         PIC 9(002).
+               10 XDPH063C-O-DESCR-LIV-DELIBERA   PIC X(020).
+               10 XDPH063C-O-SPORTELLO            PIC X(004).
+               10 XDPH063C-O-DESCR-SPORTELLO      PIC X(020).
+               10 XDPH063C-O-COD-ISTRUTTORE       PIC X(003).
+               10 XDPH063C-O-DESCR-ISTRUTTORE     PIC X(020).
+               10 XDPH063C-O-DESCR-RUOLO          PIC X(020).
+               10 XDPH063C-O-DESCR-RUOLO-1        PIC X(020).
+               10 XDPH063C-O-DESCR-PROPONENTE     PIC X(020).
+      *
+

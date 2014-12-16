@@ -1,0 +1,48 @@
+      ***************************************************************
+      * PROCEDURA       : PEF                                       *
+      *                   CC - STATISTICHE MOVIMENTI                *
+      *                   AREA FORMATTATORE XFTPH918                *
+      ***************************************************************
+       01  XDPH918C-AREA.
+      * AREA DI INPUT
+           05  XDPH918C-DATI-INPUT.
+               10 XDPH918C-I-NDG                    PIC X(016).
+      * AREA DI OUTPUT
+           05  XDPH918C-DATI-OUTPUT.
+               10 XDPH918C-O-NUMOCCURS              PIC 9(003).
+               10 XDPH918C-O-PEF           OCCURS 50.
+                  15 XDPH918C-O-TIP-RAGGR           PIC X(003).
+                  15 XDPH918C-O-DESC-RAGGR          PIC X(045).
+                  15 XDPH918C-O-NR-DA-01            PIC 9(008).
+                  15 XDPH918C-O-NR-DA-01-S          PIC X(001).
+                  15 XDPH918C-O-IM-DA-01            PIC 9(018).
+                  15 XDPH918C-O-IM-DA-01-S          PIC X(001).
+                  15 XDPH918C-O-NR-AV-01            PIC 9(018).
+                  15 XDPH918C-O-NR-AV-01-S          PIC X(001).
+                  15 XDPH918C-O-IM-AV-01            PIC 9(018).
+                  15 XDPH918C-O-IM-AV-01-S          PIC X(001).
+                  15 XDPH918C-O-NR-DA-02            PIC 9(018).
+                  15 XDPH918C-O-NR-DA-02-S          PIC X(001).
+                  15 XDPH918C-O-IM-DA-02            PIC 9(018).
+                  15 XDPH918C-O-IM-DA-02-S          PIC X(001).
+                  15 XDPH918C-O-NR-AV-02            PIC 9(018).
+                  15 XDPH918C-O-NR-AV-02-S          PIC X(001).
+                  15 XDPH918C-O-IM-AV-02            PIC 9(018).
+                  15 XDPH918C-O-IM-AV-02-S          PIC X(001).
+                  15 XDPH918C-O-NR-DA-03            PIC 9(018).
+                  15 XDPH918C-O-NR-DA-03-S          PIC X(001).
+                  15 XDPH918C-O-IM-DA-03            PIC 9(018).
+                  15 XDPH918C-O-IM-DA-03-S          PIC X(001).
+                  15 XDPH918C-O-NR-AV-03            PIC 9(018).
+                  15 XDPH918C-O-NR-AV-03-S          PIC X(001).
+                  15 XDPH918C-O-IM-AV-03            PIC 9(018).
+                  15 XDPH918C-O-IM-AV-03-S          PIC X(001).
+                  15 XDPH918C-O-NR-DA-04            PIC 9(018).
+                  15 XDPH918C-O-NR-DA-04-S          PIC X(001).
+                  15 XDPH918C-O-IM-DA-04            PIC 9(018).
+                  15 XDPH918C-O-IM-DA-04-S          PIC X(001).
+                  15 XDPH918C-O-NR-AV-04            PIC 9(018).
+                  15 XDPH918C-O-NR-AV-04-S          PIC X(001).
+                  15 XDPH918C-O-IM-AV-04            PIC 9(018).
+                  15 XDPH918C-O-IM-AV-04-S          PIC X(001).
+

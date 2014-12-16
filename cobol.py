@@ -383,7 +383,8 @@ tree = CodeTree(ccobol)
 #tree.ptree()
 #print(tree.root.xmlMap())
 for p in tree.placeHolders:
-    print('%s\t%s' %(p.getMock(), p.name))
+    if p.io == 'OUT':
+        print('%s -----> %s' %(p.getMock(), p.name))
 
 
 if not os.path.isdir(optlist.outdir):
