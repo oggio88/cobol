@@ -6,7 +6,7 @@ import json
 from random import random,choice
 from optparse import OptionParser
 
-usage = "Usage: %prog COPY_COBOL_FILE  -o OUTPUT_FOLDER -s SERVICE_NAME"
+usage = "Usage: %prog COPY_COBOL_FILE  -o OUTPUT_FOLDER -s SERVICE_NAME -o OUTPUT_FOLDER"
 parser = OptionParser(usage)
 parser.add_option("-o", "--output", dest="outdir", metavar="OUTPUT_FOLDER", help="Specify the eclipse workspace folder")
 parser.add_option("-s", "--service-name", dest="serviceName", metavar="SERVICE_NAME", help="Specify the service name")
