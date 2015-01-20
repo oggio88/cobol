@@ -17,11 +17,11 @@ public class {serviceName}ConnectorImpl extends GenericConnectorImpl implements 
     public {serviceName}ServiceResponse call{serviceName}(DaoExecutionDescriptor daoExecutionDescriptor,
             {serviceName}ServiceRequest request, {serviceName}ServiceResponse response) throws Exception
     {{
-        List<Bean> lista = new ArrayList<Bean>();
+        List<BeanName> lista = new ArrayList<BeanName>();
         HashMap<String, Object> results = daoExecutionDescriptor.getHashQueryResults();
 
         if(checkEsito(daoExecutionDescriptor, response, results)==GenericServiceResponse.ESITO_OK){{
-            listaCodiceAtecoVerifica=(List<Bean>) results.get("COBOL-NAME");
+            lista = (List<BeanName>) results.get("COBOL-NAME");
         }}
         return null;
     }}

@@ -238,7 +238,7 @@ class PlaceHolder(Node):
                             size = int(m.group(3))
                     else:
                         size = len(m.group(1))
-                    res = self.name[:size]
+                    res = self.name[:size] if size>1 else choice(('S','N'))
                     return res.rjust(size, 'F')
 
         def xmlMap(self):
@@ -376,6 +376,7 @@ class CodeTree():
         'packageName': optlist.packageName,
         }
         return CodeTree.templateConnectorImpl.format(**d)
+        
 
 #ptree(root)
 ccobol = open(args[0], 'r')
