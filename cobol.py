@@ -2,6 +2,7 @@
 import sys,os
 import re,pdb
 import json
+import datetime
 
 from random import random,choice
 from optparse import OptionParser
@@ -112,7 +113,7 @@ class Node:
                     if ch.isCursor:
                         cursor = ch
                     i += 1
-                tmp = ' '*12
+                tmp = ' '
                 for ch in self.children:
                     tmp += ch.xmlMap()
                 children = ('>\n' + ' '*12 + '<').join(tmp.split('>\n<'))[:-1]
