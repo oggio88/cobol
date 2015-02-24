@@ -1,0 +1,68 @@
+      ***************************************************************
+      * PROCEDURA       : PEF                                       *
+      *                   POSIZIONE CLIENTE:  (OCCURS 12)           *
+      *                   (A) HERMIONE                              *
+      *                   (B) LGD                                   *
+      *                   (C) CR                                    *
+      *                   (D) RATING                                *
+      *                   (E) FIDI (OCCURS 900)                     *
+      *                   (F) ???????"                              *
+      *                                                             *
+      *                   AREA FORMATTATORE XFTPH026                *
+      ***************************************************************
+       01 XDPH026C-AREA.
+      * AREA DI INPUT
+          05 XDPH026C-DATI-INPUT.
+             10 XDPH026C-I-NDG                      PIC  X(016).
+             10 XDPH026C-I-DATA-RIF                 PIC  9(008).
+      * AREA DI OUTPUT
+          05 XDPH026C-DATI-OUTPUT.
+             10 XDPH026C-O-NUMOCCURS                PIC  9(003).
+             10 XDPH026C-O-PEF                      OCCURS 12.
+                15 XDPH026C-O-DATA-RIF              PIC  9(008).
+                15 XDPH026C-O-TAB-OUT-A.
+                   20 XDPH026C-O-NUM-GG-SCONFINO    PIC  9(005).
+                   20 XDPH026C-O-SCONFINO           PIC  9(018).
+                   20 XDPH026C-O-UTILIZZO           PIC  9(018).
+                   20 XDPH026C-O-FIDO-OP            PIC  9(018).
+                   20 XDPH026C-O-PERC-SU            PIC  9(003)V9(006).
+                   20 XDPH026C-O-PERC-SU-M-A        PIC  9(003)V9(006).
+                   20 XDPH026C-O-PERC-SU-M-B        PIC  9(003)V9(006).
+                   20 XDPH026C-O-PERC-SU-M-C        PIC  9(003)V9(006).
+                15 XDPH026C-O-TAB-OUT-B.
+                   20 XDPH026C-O-VAL-EAD            PIC  S9(16)V9(2)
+                                      SIGN LEADING SEPARATE.
+                   20 XDPH026C-O-VAL-LGD            PIC  S9(16)V9(2)
+                                      SIGN LEADING SEPARATE.
+                   20 XDPH026C-O-VAL-PA             PIC  S9(16)V9(2)
+                                      SIGN LEADING SEPARATE.
+                   20 XDPH026C-O-INC-LGD            PIC  S9(5)V9(4)
+                                      SIGN LEADING SEPARATE.
+                   20 XDPH026C-O-INC-PA             PIC  S9(5)V9(4)
+                                      SIGN LEADING SEPARATE.
+                15 XDPH026C-O-TAB-OUT-C.
+                   20 XDPH026C-O-S5-TOTCAS-A-UTI    PIC  9(015).
+                15 XDPH026C-O-TAB-OUT-D.
+                   20 XDPH026C-O-RATING             PIC  9(003).
+                   20 XDPH026C-O-DATA-RATING        PIC  9(008).
+                15 XDPH026C-O-TAB-OUT-E.
+                  17 XDPH026C-O-NUMOCCURS-E       PIC  9(003).
+                  17 XDPH026C-O-SERVIZIO-E        OCCURS 900.
+                  * 19 XDPH026C-O-TAB-SERVIZIO-E.
+                     20 XDPH026C-O-PROG-FIDO      PIC  9(003).
+                     20 XDPH026C-O-FORMA-TEC-FIDO PIC  X(005).
+                     20 XDPH026C-O-SUB-FT-FIDO    PIC  X(003).
+                     20 XDPH026C-O-IMPORTO-FIDO   PIC  9(012).
+                     20 XDPH026C-O-SPORTELLO      PIC  X(004).
+                     20 XDPH026C-O-TIPO-RAP       PIC  X(002).
+                     20 XDPH026C-O-NUM-CONTO      PIC  9(014).
+                     20 XDPH026C-O-FLAG-POOL      PIC  X(001).
+                     20 XDPH026C-O-FLAG-FICS      PIC  X(001).
+                     20 XDPH026C-O-FLAG-MASSIMA   PIC  X(001).
+                     20 XDPH026C-O-FLAG-FICS-SAL  PIC  X(001).
+                15 XDPH026C-O-TAB-OUT-F.
+                   20 XDPH026C-O-CLASSIFICAZ      PIC  X(010).
+                   20 XDPH026C-O-QUANTITA-ANOM    PIC  9(003).
+                   20 XDPH026C-O-FASCIA-RISC      PIC  X(010).
+
+
